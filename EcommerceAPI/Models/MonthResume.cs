@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EcommerceAPI.Models;
 
-[Table("Month Resume")]
+[Table("Month_Resume")]
 public class MonthResume
 {
     public MonthResume()
@@ -15,7 +15,9 @@ public class MonthResume
 
     [Key]
     public int MonthResumeId { get; set; }
-    public DateTime Month { get; set; }
+    [Range(1,12)]
+    public int Month { get; set; }
+    public int Year { get; set; }
     public ICollection<Order>? MonthOrders { get; set; }
     public ICollection<DayResume>? MonthDaysResume { get; set; }
 }

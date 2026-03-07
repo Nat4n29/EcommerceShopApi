@@ -33,10 +33,7 @@ namespace EcommerceAPI.Migrations
                     b.Property<decimal>("CardValue")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<DateTime>("Day")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int?>("DayMonthResumeMonthResumeId")
+                    b.Property<int>("Day")
                         .HasColumnType("int");
 
                     b.Property<int>("Delivered")
@@ -57,6 +54,9 @@ namespace EcommerceAPI.Migrations
                     b.Property<decimal>("GrossRenevue")
                         .HasColumnType("decimal(10,2)");
 
+                    b.Property<int>("MonthResumeId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("RealNetValue")
                         .HasColumnType("decimal(10,2)");
 
@@ -71,9 +71,9 @@ namespace EcommerceAPI.Migrations
 
                     b.HasKey("DayResumeId");
 
-                    b.HasIndex("DayMonthResumeMonthResumeId");
+                    b.HasIndex("MonthResumeId");
 
-                    b.ToTable("Day Resume");
+                    b.ToTable("Day_Resume");
                 });
 
             modelBuilder.Entity("EcommerceAPI.Models.MonthResume", b =>
@@ -84,12 +84,15 @@ namespace EcommerceAPI.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("MonthResumeId"));
 
-                    b.Property<DateTime>("Month")
-                        .HasColumnType("datetime(6)");
+                    b.Property<int>("Month")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
 
                     b.HasKey("MonthResumeId");
 
-                    b.ToTable("Month Resume");
+                    b.ToTable("Month_Resume");
                 });
 
             modelBuilder.Entity("EcommerceAPI.Models.Order", b =>
@@ -106,10 +109,7 @@ namespace EcommerceAPI.Migrations
                     b.Property<int>("DropiId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("NetValue")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<int?>("OrderMonthResumeMonthResumeId")
+                    b.Property<int>("MonthResumeId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("ShippingValue")
@@ -129,7 +129,7 @@ namespace EcommerceAPI.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("OrderMonthResumeMonthResumeId");
+                    b.HasIndex("MonthResumeId");
 
                     b.ToTable("Order");
                 });
@@ -138,7 +138,9 @@ namespace EcommerceAPI.Migrations
                 {
                     b.HasOne("EcommerceAPI.Models.MonthResume", "DayMonthResume")
                         .WithMany("MonthDaysResume")
-                        .HasForeignKey("DayMonthResumeMonthResumeId");
+                        .HasForeignKey("MonthResumeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("DayMonthResume");
                 });
@@ -147,7 +149,9 @@ namespace EcommerceAPI.Migrations
                 {
                     b.HasOne("EcommerceAPI.Models.MonthResume", "OrderMonthResume")
                         .WithMany("MonthOrders")
-                        .HasForeignKey("OrderMonthResumeMonthResumeId");
+                        .HasForeignKey("MonthResumeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("OrderMonthResume");
                 });
