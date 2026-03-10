@@ -42,6 +42,18 @@ namespace EcommerceAPI.Controllers
             return order;
         }
 
+        [HttpGet("{month}/{year}", Name = "Find Order by Month and Year")]
+        public ActionResult<Order> GetOrderByMonthYear(int month, int year)
+        {
+            var order = _context.Orders.AsNoTracking()
+                .FirstOrDefault(o => o.OrderMonthResume.Month == month && o.OrderMonthResume.Year == year);
+
+            if (order is null)
+                return NotFound("Order not found!");
+
+            return order;
+        }
+
         //----------------------------------------------------------------------
 
         [HttpPost]
